@@ -33,10 +33,6 @@ public class GameManager : MonoBehaviour
         customizeQuiz.gameObject.SetActive(false);   
     }
 
-    void Start()
-    {
-    }
-
     void Update()
     {
         if (quiz.isComplete)
