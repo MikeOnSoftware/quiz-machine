@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine.UI;
@@ -6,8 +5,6 @@ using UnityEngine;
 
 public class CustomizeQuiz : MonoBehaviour
 {
-    QuestionSO currentQuestion;
-
     [Header("QUESTIONS")]
     [SerializeField] List<QuestionSO>       customQuestions;
     [SerializeField] Button                 addQuestion;
@@ -21,16 +18,25 @@ public class CustomizeQuiz : MonoBehaviour
     [Header("ERROR")]
     [SerializeField] TextMeshProUGUI        errorMessage;
 
-    public List<QuestionSO> CustomQuestions
-    {
-        get { return customQuestions; }
-    }
+    public List<QuestionSO> CustomQuestions => customQuestions;
 
+    const string InitialAnswersCount = "6";
+    const string QuestionTextInitialMessage = "Type new question...";
+    const string AnswerTextInitialMessage = "Type an answer...";
+
+    QuestionSO currentQuestion;
+
+    //All fields with possible user input are validated in Unity
     void Awake()
     {
-        answersCountIntInput.text = "6";
+        if (Application.isMobilePlatform)
+        {
+            errorMessage.text = "If you don't see a keyboard, connect an external one or download the app for your device!";
+        }
+        answersCountIntInput.text = InitialAnswersCount;
         questionsCount.text = customQuestions.Count.ToString();
     }
+
     void Update()
     {
         if (answersCountIntInput.text != "")
@@ -48,7 +54,6 @@ public class CustomizeQuiz : MonoBehaviour
                     answerButtons[i].SetActive(true);
                 }
             }
-
         }       
     }
 
@@ -72,12 +77,12 @@ public class CustomizeQuiz : MonoBehaviour
 
     void CleanFields()
     {
-        answersCountIntInput.text = "6";
-        GameObject.Find("QuestionText").GetComponent<TMP_InputField>().text = "Type new question...";
+        answersCountIntInput.text = InitialAnswersCount;
+        GameObject.Find("QuestionText").GetComponent<TMP_InputField>().text = QuestionTextInitialMessage;
         for (int i = 0; i < mAnswersCount; i++)
         {
-            answerButtons[i].GetComponent<TMP_InputField>().text = "Type an answer...";
+            answerButtons[i].GetComponent<TMP_InputField>().text = AnswerTextInitialMessage;
         }
     }
-
+    public void OpenTouchKeyboard() => TouchScreenKeyboard.Open("", TouchScreenKeyboardType.Default);
 }
