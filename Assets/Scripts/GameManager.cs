@@ -5,11 +5,11 @@ using UnityEngine.SceneManagement;
 public class GameManager : MonoBehaviour
 {
     [SerializeField] AudioSource selectQuizSound;
+    [SerializeField] GameObject  startScreen;
 
-    Quiz            quiz;
+    Quiz quiz;
     EndScreen       endScreen;
     CustomizeQuiz   customizeQuiz;
-    StartScreen     startScreen;
 
     public int SelectedQuizIndex { get; private set; } = -1;
 
@@ -18,9 +18,8 @@ public class GameManager : MonoBehaviour
         quiz = FindObjectOfType<Quiz>();
         endScreen = FindObjectOfType<EndScreen>();
         customizeQuiz = FindObjectOfType<CustomizeQuiz>();
-        startScreen = FindObjectOfType<StartScreen>();
 
-        startScreen.gameObject.SetActive(true);
+        startScreen.SetActive(true);
         quiz.gameObject.SetActive(false);
         endScreen.gameObject.SetActive(false);
         customizeQuiz.gameObject.SetActive(false);   
@@ -28,7 +27,7 @@ public class GameManager : MonoBehaviour
 
     void Update()
     {
-        if (quiz.isComplete) Invoke(nameof(ShowEndScreen), 3f);
+        if (quiz.IsComplete) Invoke(nameof(ShowEndScreen), 3f);
     }
 
     void ShowEndScreen()
@@ -98,3 +97,4 @@ public class GameManager : MonoBehaviour
 
     public void OnReplayLevel() => SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
 }
+
