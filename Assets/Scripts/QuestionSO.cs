@@ -20,10 +20,7 @@ public class QuestionSO : ScriptableObject
         get { return correctAnswerIndex; }
         private set { correctAnswerIndex = value; }
     }
-    public string GetAnswer(int index)
-    {
-        return answers[index];
-    }
+    public string GetAnswer(int index) => return answers[index];
 
     //For custom quiz
     public string SetQuestion
