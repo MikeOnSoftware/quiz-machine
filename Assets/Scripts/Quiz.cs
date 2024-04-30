@@ -1,22 +1,22 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.SceneManagement;
 using TMPro;
 
 public class Quiz : MonoBehaviour
 {
     [Header("QUESTIONS")]
+    [SerializeField] internal List<List<QuestionSO>> quizCategories = new();
+
     [SerializeField] List<QuestionSO> questionsRandom;
     [SerializeField] List<QuestionSO> questionsNature;
     [SerializeField] List<QuestionSO> questionsSports;
     [SerializeField] List<QuestionSO> questionsCars;
+
     [SerializeField] internal List<QuestionSO> currentQuiz;
 
     [SerializeField] TextMeshProUGUI  questionText;
     QuestionSO currentQuestion;
-    [SerializeField] internal List<List<QuestionSO>> quizCategories = new();
 
     [Header("ANSWERS")]
     [SerializeField] List<GameObject> answerButtons;
@@ -39,10 +39,12 @@ public class Quiz : MonoBehaviour
 
     [Header("ProgressBar")]
     [SerializeField] internal Slider progressBar;
-    internal bool isComplete;
-    int mSelectedQuizIndex;
+
     GameManager gameManager;
 
+    int mSelectedQuizIndex;
+
+    public bool IsComplete { get; private set; }
 
     void Awake()
     {
@@ -73,7 +75,7 @@ public class Quiz : MonoBehaviour
             if (progressBar.value == progressBar.maxValue)
             {
                 Debug.Log("Complete");
-                isComplete = true;
+                IsComplete = true;
                 return;
             }
 
@@ -114,7 +116,7 @@ public class Quiz : MonoBehaviour
         scoreText.text = "Score: " + scoreKeeper.CalculateScore() + "%";
         if (progressBar.value == progressBar.maxValue)
         {
-            isComplete = true;
+            IsComplete = true;
         }
     }
 
@@ -191,6 +193,4 @@ public class Quiz : MonoBehaviour
             button.GetComponent<Image>().sprite = defaultAnswerSprite;
         }
     }
-
 }
-
