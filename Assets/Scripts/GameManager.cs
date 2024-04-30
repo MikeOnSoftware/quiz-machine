@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -7,18 +6,12 @@ public class GameManager : MonoBehaviour
 {
     [SerializeField] AudioSource selectQuizSound;
 
-    Quiz quiz;
-    EndScreen endScreen;
-    CustomizeQuiz customizeQuiz;
-    StartScreen startScreen;
+    Quiz            quiz;
+    EndScreen       endScreen;
+    CustomizeQuiz   customizeQuiz;
+    StartScreen     startScreen;
 
-    int mSelectedQuizIndex = -1;
-
-    public int SelectedQuizIndex
-    {
-        get { return mSelectedQuizIndex; }
-        set { mSelectedQuizIndex = value; }
-    }
+    public int SelectedQuizIndex { get; private set; } = -1;
 
     void Awake()
     {
@@ -35,10 +28,7 @@ public class GameManager : MonoBehaviour
 
     void Update()
     {
-        if (quiz.isComplete)
-        {
-            Invoke("ShowEndScreen", 3f);
-        }
+        if (quiz.isComplete) Invoke(nameof(ShowEndScreen), 3f);
     }
 
     void ShowEndScreen()
@@ -52,7 +42,7 @@ public class GameManager : MonoBehaviour
     {
         selectQuizSound.Play();
 
-        mSelectedQuizIndex = selectedIndex;
+        SelectedQuizIndex = selectedIndex;
 
         quiz.currentQuiz = new List<QuestionSO>();
         var selectedQuizCategory = quiz.quizCategories[selectedIndex];
@@ -61,7 +51,7 @@ public class GameManager : MonoBehaviour
         {
             quiz.currentQuiz.Add(selectedQuizCategory[i]);
         }
-        Invoke("StartSelectedQuiz", 0.9f); //delay is for loading
+        Invoke(nameof(StartSelectedQuiz), 0.8f); 
     }
 
     void StartSelectedQuiz()
@@ -79,7 +69,6 @@ public class GameManager : MonoBehaviour
     internal void OnStartCustomQuiz()
     {
         quiz.currentQuiz = new List<QuestionSO>();
-        // quiz.isComplete = false;
 
         for (int i = 0; i < customizeQuiz.CustomQuestions.Count; i++)
         {
@@ -107,10 +96,5 @@ public class GameManager : MonoBehaviour
         quiz.progressBar.value = 0;
     }
 
-    public void OnReplayLevel()
-    {
-        Debug.Log("Reload");
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
-    }
+    public void OnReplayLevel() => SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
 }
-
