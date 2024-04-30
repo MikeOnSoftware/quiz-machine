@@ -1,68 +1,49 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Timer : MonoBehaviour
 {
-    [SerializeField] float mTimeToComplateQuestion   = 5f;
-    [SerializeField] float mTimeToShowCorrectAnswer  = 3f;
-    float mTimerValue;
-    float mFillFraction;
-    bool mIsAnsweringQuestion = false;
-    bool mLoadNexQuestion = false;
+    [SerializeField] float timeToComplateQuestion   = 5f;
+    [SerializeField] float timeToShowCorrectAnswer  = 3f;
+    float timerValue;
+    float fillFraction;
+    bool isAnsweringQuestion = false;
 
-    public float FillFraction
-    {
-        get { return mFillFraction; }
-    }
-    public bool IsAnsweringQuestion
-    {
-        get { return mIsAnsweringQuestion; }
-    }
-    public bool LoadNexQuestion
-    {
-        get { return mLoadNexQuestion; }
-        internal set { mLoadNexQuestion = value; }
-    }
+    public float FillFraction => fillFraction;
+    public bool IsAnsweringQuestion => isAnsweringQuestion;
+    public bool LoadNexQuestion { get; internal set; } = false;
 
-    void Update()
-    {
-        UpdateTimer();
-    }
+    void Update() => UpdateTimer();
 
     void UpdateTimer()
     {
-        mTimerValue -= Time.deltaTime;
+        timerValue -= Time.deltaTime;
 
-        if (mIsAnsweringQuestion)
+        if (isAnsweringQuestion)
         {
-            if (mTimerValue > 0)
+            if (timerValue > 0)
             {
-                mFillFraction = mTimerValue / mTimeToComplateQuestion;
+                fillFraction = timerValue / timeToComplateQuestion;
             }
             else
             {
-                mIsAnsweringQuestion = false;
-                mTimerValue = mTimeToShowCorrectAnswer;
+                isAnsweringQuestion = false;
+                timerValue = timeToShowCorrectAnswer;
             }
         }
         else
         {
-            if (mTimerValue > 0)
+            if (timerValue > 0)
             {
-                mFillFraction = mTimerValue / mTimeToShowCorrectAnswer;
+                fillFraction = timerValue / timeToShowCorrectAnswer;
             }
             else
             {
-                mIsAnsweringQuestion = true;
-                mTimerValue = mTimeToComplateQuestion;
-                mLoadNexQuestion = true;
+                isAnsweringQuestion = true;
+                timerValue = timeToComplateQuestion;
+                LoadNexQuestion = true;
             }
         }
     }
 
-    internal void SetTimer(int value)
-    {
-        mTimerValue = value;
-    }
+    internal void SetTimer(int value) => timerValue = value;
 }
